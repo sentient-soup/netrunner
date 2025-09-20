@@ -79,8 +79,8 @@ export default function ControlsPanel() {
             <input
               type='range'
               id='tunnel-size'
-              min='50'
-              max='200'
+              min='500'
+              max='2000'
               value={controls.tunnelSize}
               onInput={(e) =>
                 setControls({
@@ -100,8 +100,8 @@ export default function ControlsPanel() {
               type='range'
               id='rotation-speed'
               min='0'
-              max='5'
-              step='0.1'
+              max='1'
+              step='0.01'
               value={controls.rotationSpeed}
               onInput={(e) =>
                 setControls({

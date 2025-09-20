@@ -9,7 +9,8 @@ export function ControlsProvider({ children }) {
     tunnelColor: '#00ff88',
     backgroundColor: '#000011',
     animationSpeed: 3,
-    rotationSpeed: 1,
+    rotationSpeed: 0,
+    tunnelSize: 500,
   });
   return (
     <ControlsContext.Provider value={{ controls, setControls }}>

@@ -2,6 +2,7 @@ export function drawCircles(
   p,
   segments,
   speed,
+  rotationSpeed,
   tunnelColor,
   baseRadius,
   interval,
@@ -15,7 +16,7 @@ export function drawCircles(
   for (let i = segments.length - 1; i >= 0; i--) {
     const segment = segments[i];
     segment.z -= 2 * speed;
-    // segment.rotation += 0.01 * speed;
+    // segment.rotation += 0.01 * rotationSpeed;
     if (segment.z < -interval) {
       segment.z = (maxSegments - 1) * interval;
     }

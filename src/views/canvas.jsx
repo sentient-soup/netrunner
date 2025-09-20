@@ -24,10 +24,9 @@ export default function Canvas() {
 
     const totalSegments = 50;
     const interval = 100;
-    const baseRadius = 500;
     const tunnelColor = hexToRgb(controls.tunnelColor);
     const backgroundColor = hexToRgb(controls.backgroundColor);
-    const mode = DrawMode.square;
+    const mode = DrawMode.triangle;
     const draw = {
       [DrawMode.circle]: drawCircles,
       [DrawMode.triangle]: drawTriangles,
@@ -45,7 +44,7 @@ export default function Canvas() {
         for (let i = 0; i < totalSegments; i++) {
           tunnelSegments.push({
             z: i * interval,
-            rotation: i * 0.1,
+            rotation: i * 0.1 * controls.rotationSpeed,
           });
         }
       };
@@ -57,8 +56,9 @@ export default function Canvas() {
           p,
           tunnelSegments,
           controls.animationSpeed,
+          controls.rotationSpeed,
           tunnelColor,
-          baseRadius,
+          controls.tunnelSize,
           interval,
           totalSegments
         );
