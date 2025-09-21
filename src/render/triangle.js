@@ -6,7 +6,8 @@ export function drawTriangles(
   tunnelColor,
   baseSize,
   interval,
-  maxSegments
+  maxSegments,
+  tunnelCurve
 ) {
   p.push();
   p.translate(p.width / 2, p.height / 2);
@@ -31,6 +32,8 @@ export function drawTriangles(
     p.rotate(segment.rotation);
     const h = size / 2;
     const l = (size * 0.87) / 3;
+    const xOffset = (segment.z * tunnelCurve) / 360;
+    p.translate(xOffset, 0);
     p.triangle(0, 0 - l * 2, -h, l, h, l);
     p.pop();
   }

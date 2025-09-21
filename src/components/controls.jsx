@@ -11,6 +11,8 @@ export function ControlsProvider({ children }) {
     animationSpeed: 3,
     rotationSpeed: 0,
     tunnelSize: 500,
+    tunnelCurve: 0,
+    tunnelShape: 'triangle',
   });
   return (
     <ControlsContext.Provider value={{ controls, setControls }}>

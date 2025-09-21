@@ -6,7 +6,8 @@ export function drawCircles(
   tunnelColor,
   baseRadius,
   interval,
-  maxSegments
+  maxSegments,
+  tunnelCurve
 ) {
   p.push();
   p.translate(p.width / 2, p.height / 2);
@@ -16,13 +17,14 @@ export function drawCircles(
   for (let i = segments.length - 1; i >= 0; i--) {
     const segment = segments[i];
     segment.z -= 2 * speed;
+    // Rotate a circle lol
     // segment.rotation += 0.01 * rotationSpeed;
     if (segment.z < -interval) {
       segment.z = (maxSegments - 1) * interval;
     }
     const perspective = 200 / (200 + segment.z);
     const radius = baseRadius * perspective;
-    p.ellipse(0, 0, radius * 2, radius * 2);
+    p.ellipse((segment.z * tunnelCurve) / 360, 0, radius * 2, radius * 2);
   }
   p.pop();
 }

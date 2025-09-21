@@ -6,7 +6,8 @@ export function drawSquares(
   tunnelColor,
   baseRadius,
   interval,
-  maxSegments
+  maxSegments,
+  tunnelCurve
 ) {
   p.push();
   p.translate(p.width / 2, p.height / 2);
@@ -29,7 +30,7 @@ export function drawSquares(
     p.push();
     p.rotate(segment.rotation);
     p.rectMode(p.CENTER);
-    p.rect(0, 0, radius * 2, radius * 2);
+    p.rect((segment.z * tunnelCurve) / 360, 0, radius * 2, radius * 2);
     p.pop();
   }
   p.pop();

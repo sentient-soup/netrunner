@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'preact/hooks';
 import p5 from 'p5';
-// import circle from '../components/tunnels/circle';
 import { useControls } from '../components/controls';
 import { hexToRgb } from '../components/utils';
 import { drawCircles } from '../render/circle';
@@ -24,9 +23,10 @@ export default function Canvas() {
 
     const totalSegments = 50;
     const interval = 100;
+    const tunnelCurve = controls.tunnelCurve;
     const tunnelColor = hexToRgb(controls.tunnelColor);
     const backgroundColor = hexToRgb(controls.backgroundColor);
-    const mode = DrawMode.triangle;
+    const mode = controls.tunnelShape;
     const draw = {
       [DrawMode.circle]: drawCircles,
       [DrawMode.triangle]: drawTriangles,
@@ -35,11 +35,10 @@ export default function Canvas() {
 
     const sketch = (p) => {
       p.setup = () => {
-        const w = canvasRef.current ? canvasRef.current.clientWidth : 800;
-        const h = canvasRef.current
-          ? Math.max(300, Math.min(window.innerHeight - 200, w * 0.75))
-          : 600;
-        p.createCanvas(w, h).parent(canvasRef.current);
+        p.createCanvas(
+          canvasRef.current.clientWidth,
+          canvasRef.current.clientHeight
+        ).parent(canvasRef.current);
         tunnelSegments = [];
         for (let i = 0; i < totalSegments; i++) {
           tunnelSegments.push({
@@ -60,15 +59,17 @@ export default function Canvas() {
           tunnelColor,
           controls.tunnelSize,
           interval,
-          totalSegments
+          totalSegments,
+          tunnelCurve
         );
       };
 
       p.windowResized = () => {
         if (canvasRef.current) {
-          const w = canvasRef.current.clientWidth;
-          const h = Math.max(300, Math.min(window.innerHeight - 200, w * 0.75));
-          p.resizeCanvas(w, h);
+          p.resizeCanvas(
+            canvasRef.current.clientWidth,
+            canvasRef.current.clientHeight
+          );
         }
       };
     };
