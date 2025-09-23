@@ -11,6 +11,7 @@ export function drawTriangles(
 ) {
   p.push();
   p.translate(p.width / 2, p.height / 2);
+
   p.stroke(...tunnelColor, 150);
   p.strokeWeight(1);
   p.noFill();
@@ -26,8 +27,10 @@ export function drawTriangles(
         segments[(i - 1 + segments.length) % segments.length].rotation -
         0.1 * rotationSpeed;
     }
+    const coefficient = 0.001;
     const perspective = 200 / (200 + segment.z);
     const size = baseSize * 2 * perspective;
+
     p.push();
     p.rotate(segment.rotation);
     const h = size / 2;
@@ -37,5 +40,6 @@ export function drawTriangles(
     p.triangle(0, 0 - l * 2, -h, l, h, l);
     p.pop();
   }
+
   p.pop();
 }

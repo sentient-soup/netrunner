@@ -44,24 +44,54 @@ export default function Canvas() {
           tunnelSegments.push({
             z: i * interval,
             rotation: i * 0.1 * controls.rotationSpeed,
+            size:
+              controls.tunnelSize * Math.sin((i * Math.PI * 2) / totalSegments),
+            x: 0,
+            y: 0,
           });
         }
       };
 
       p.draw = () => {
-        time += 0.016 * controls.animationSpeed;
+        time += controls.animationSpeed;
         p.background(...backgroundColor);
-        draw[mode](
-          p,
-          tunnelSegments,
-          controls.animationSpeed,
-          controls.rotationSpeed,
-          tunnelColor,
-          controls.tunnelSize,
-          interval,
-          totalSegments,
-          tunnelCurve
-        );
+        p.push();
+        p.translate(p.width / 2, p.height / 2);
+        // const seeds = [0.123, 0.456, 0.05, 0.789, 0.123, 0.07, 123.456];
+        const depth = 1000;
+        p.randomSeed(123);
+        for (let i = 0; i < 1000; i++) {
+          const starZ = (p.random(0, depth) - time) % depth;
+          // const starZ = ((i * 123.456) % depth) - depth / 2;
+          // const starZ = 1;
+          const starX = p.random(-1000, 1000);
+          // (Math.sin(i * 0.123 * 0.05) * depth) / 2 +
+          // (Math.cos(i * 0.543) * depth) / 3;
+          const starY = p.random(-1000, 1000);
+          // (Math.cos(i * 0.789 * 0.07) * depth) / 2 +
+          // (Math.sin(i * 0.987) * depth) / 4;
+
+          const perspective = 200 / (starZ + 1000);
+          const screenX = starX * perspective;
+          const screenY = starY * perspective;
+
+          p.fill(255, 255, 255);
+          p.circle(screenX, screenY, 3);
+        }
+
+        p.pop();
+
+        // draw[mode](
+        //   p,
+        //   tunnelSegments,
+        //   controls.animationSpeed,
+        //   controls.rotationSpeed,
+        //   tunnelColor,
+        //   controls.tunnelSize,
+        //   interval,
+        //   totalSegments,
+        //   tunnelCurve
+        // );
       };
 
       p.windowResized = () => {
