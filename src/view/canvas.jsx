@@ -44,13 +44,40 @@ export default function Canvas() {
           tunnelSegments.push({
             z: i * interval,
             rotation: i * 0.1 * controls.rotationSpeed,
+            size:
+              controls.tunnelSize * Math.sin((i * Math.PI * 2) / totalSegments),
+            x: 0,
+            y: 0,
           });
         }
       };
 
       p.draw = () => {
-        time += 0.016 * controls.animationSpeed;
+        time += controls.animationSpeed * 5;
         p.background(...backgroundColor);
+        p.push();
+        p.translate(p.width / 2, p.height / 2);
+        const depth = 7000;
+        const fov = 45;
+        p.randomSeed(123);
+        for (let i = 0; i < 200; i++) {
+          const starZ = (p.random(0, depth) + time) % depth;
+          const starX = p.random(-1000, 1000);
+          const starY = p.random(-1000, 1000);
+
+          // Just manually calculate the fov projection for fun, good math refresher
+          const screenZ =
+            ((p.height / 2) * p.sin(90 - fov / 2)) / p.sin(fov / 2);
+          const screenX = (screenZ * starX) / starZ;
+          const screenY = (screenZ * starY) / starZ;
+
+          const luminance = p.map(starZ, 0, depth * 0.9, 255, 0);
+          p.fill(luminance, luminance, luminance);
+          p.circle(screenX, screenY, 3);
+        }
+
+        p.pop();
+
         draw[mode](
           p,
           tunnelSegments,

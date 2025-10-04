@@ -4,7 +4,7 @@ export function drawSquares(
   speed,
   rotationSpeed,
   tunnelColor,
-  baseRadius,
+  baseSize,
   interval,
   maxSegments,
   tunnelCurve
@@ -18,15 +18,16 @@ export function drawSquares(
     const segment = segments[i];
     segment.z -= 2 * speed;
     segment.rotation += 0.01 * rotationSpeed;
-    if (segment.z < -interval) {
+    if (segment.z < -(interval * 5)) {
       segment.z = (maxSegments - 1) * interval;
       segment.rotation =
         // Playing around with this yields interesting results
         segments[(i + 1 + segments.length) % segments.length].rotation -
         0.1 * rotationSpeed;
+      segment.size = baseSize * Math.sin((i * Math.PI * 2) / maxSegments);
     }
     const perspective = 200 / (200 + segment.z);
-    const radius = baseRadius * perspective;
+    let radius = segment.size * perspective;
     p.push();
     p.rotate(segment.rotation);
     p.rectMode(p.CENTER);
