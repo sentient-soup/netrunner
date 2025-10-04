@@ -53,45 +53,42 @@ export default function Canvas() {
       };
 
       p.draw = () => {
-        time += controls.animationSpeed;
+        time += controls.animationSpeed * 5;
         p.background(...backgroundColor);
         p.push();
         p.translate(p.width / 2, p.height / 2);
-        // const seeds = [0.123, 0.456, 0.05, 0.789, 0.123, 0.07, 123.456];
-        const depth = 1000;
+        const depth = 7000;
+        const fov = 45;
         p.randomSeed(123);
-        for (let i = 0; i < 1000; i++) {
-          const starZ = (p.random(0, depth) - time) % depth;
-          // const starZ = ((i * 123.456) % depth) - depth / 2;
-          // const starZ = 1;
+        for (let i = 0; i < 200; i++) {
+          const starZ = (p.random(0, depth) + time) % depth;
           const starX = p.random(-1000, 1000);
-          // (Math.sin(i * 0.123 * 0.05) * depth) / 2 +
-          // (Math.cos(i * 0.543) * depth) / 3;
           const starY = p.random(-1000, 1000);
-          // (Math.cos(i * 0.789 * 0.07) * depth) / 2 +
-          // (Math.sin(i * 0.987) * depth) / 4;
 
-          const perspective = 200 / (starZ + 1000);
-          const screenX = starX * perspective;
-          const screenY = starY * perspective;
+          // Just manually calculate the fov projection for fun, good math refresher
+          const screenZ =
+            ((p.height / 2) * p.sin(90 - fov / 2)) / p.sin(fov / 2);
+          const screenX = (screenZ * starX) / starZ;
+          const screenY = (screenZ * starY) / starZ;
 
-          p.fill(255, 255, 255);
+          const luminance = p.map(starZ, 0, depth * 0.9, 255, 0);
+          p.fill(luminance, luminance, luminance);
           p.circle(screenX, screenY, 3);
         }
 
         p.pop();
 
-        // draw[mode](
-        //   p,
-        //   tunnelSegments,
-        //   controls.animationSpeed,
-        //   controls.rotationSpeed,
-        //   tunnelColor,
-        //   controls.tunnelSize,
-        //   interval,
-        //   totalSegments,
-        //   tunnelCurve
-        // );
+        draw[mode](
+          p,
+          tunnelSegments,
+          controls.animationSpeed,
+          controls.rotationSpeed,
+          tunnelColor,
+          controls.tunnelSize,
+          interval,
+          totalSegments,
+          tunnelCurve
+        );
       };
 
       p.windowResized = () => {
